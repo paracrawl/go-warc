@@ -80,11 +80,6 @@ type FilePart struct {
 
 // Creates a new FilePart object
 func NewFilePart(fileobj io.Reader, length int) (*FilePart, error) {
-	// impose an arbitrary 16M limit on file size
-	if length > (2<<23) {
-		length = 2<<23
-	}
-
 	filePart := &FilePart{
 		fileobj: fileobj,
 		length:  length,
