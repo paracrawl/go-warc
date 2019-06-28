@@ -20,7 +20,6 @@ package utils
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io"
 	"math"
 	"strings"

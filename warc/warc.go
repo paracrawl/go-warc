@@ -364,6 +364,12 @@ func (wr *WARCReader) ReadRecord() (*WARCRecord, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	length := header.GetContentLength()
+	if length > 2<<28 { // files greater than 512MB we consider invalid
+		return nil, errors.New("Invalid Record")
+	}
+
 	payload, err := utils.NewFilePart(reader, header.GetContentLength())
 	if err != nil {
 		panic(err)
