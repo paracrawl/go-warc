@@ -94,11 +94,12 @@ func NewFilePart(fileobj io.Reader, length int) (*FilePart, error) {
 	if err != nil && err.Error() != "EOF" {
 		return nil, err
 	}
-	for len(buf) < length && err == nil {
+	for len(buf) < length {
 		tmp, err := filePart.Read(-1)
-		if err == nil {
-			buf = append(buf, tmp...)
+		if err != nil {
+			break
 		}
+		buf = append(buf, tmp...)
 	}
 
 	filePart.offset = 0
