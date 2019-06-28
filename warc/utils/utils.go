@@ -20,6 +20,7 @@ package utils
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"math"
 	"strings"
@@ -80,12 +81,18 @@ type FilePart struct {
 
 // Creates a new FilePart object
 func NewFilePart(fileobj io.Reader, length int) (*FilePart, error) {
+	// impose an arbitrary 16M limit on file size
+	if length > (2<<23) {
+		length = 2<<23
+	}
+
 	filePart := &FilePart{
 		fileobj: fileobj,
 		length:  length,
 		offset:  0,
 		buf:     []byte{},
 	}
+
 	// Fix for thread-safety: fully read the contents of the FilePart
 	// initially and put the contents in the buffer. This allows the
 	// contents to be used by a different thread, freeing up the underlying
