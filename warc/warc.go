@@ -321,10 +321,10 @@ func (wr *WARCReader) ReadHeader(reader *bufio.Reader) (*WARCHeader, error) {
 	headers := map[string]string{}
 	for {
 		line, err := reader.ReadString('\n')
-//		fmt.Println("*** header line - " + line)
 		if err != nil {
 			return nil, err
 		}
+		// fmt.Println("*** header line - " + line)
 		if line == "\r\n" {
 			break
 		}
@@ -357,10 +357,6 @@ func (wr *WARCReader) Expect(reader *bufio.Reader, expectedLine string, message 
 func (wr *WARCReader) ReadRecord() (*WARCRecord, error) {
 	reader := bufio.NewReader(wr.gzipfile)
 	header, err := wr.ReadHeader(reader)
-	
-	if err != nil && strings.Index(err.Error(), "EOF") > -1 {
-		return nil, errors.New("EOF")
-	}
 	if err != nil {
 		return nil, err
 	}
@@ -382,7 +378,6 @@ func (wr *WARCReader) ReadRecord() (*WARCRecord, error) {
 	// start reading the next record in the gzip file
 	wr.gzipfile.Reset(wr.filehandle)
 	wr.gzipfile.Multistream(false)
-	
 	if err != nil {
 		return nil, err
 	}
