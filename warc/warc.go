@@ -30,7 +30,7 @@ import (
 	"strconv"
 	"strings"
 //	"time" // needed for read/write
-	"github.com/wwaites/go-warc/warc/utils"
+	"github.com/paracrawl/go-warc/warc/utils"
 )
 
 var CONTENT_TYPES map[string]string = map[string]string{
